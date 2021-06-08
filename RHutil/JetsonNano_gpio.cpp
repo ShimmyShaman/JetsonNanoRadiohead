@@ -35,6 +35,11 @@ int gpio_export(unsigned int gpio)
 	err = write(fd, buf, len);
 	close(fd);
 
+	if (err < 0)
+	{
+		perror("gpio_export : Pin probably already exported ");
+	}
+
 	return err < 0 ? err : 0;
 }
 
@@ -75,7 +80,7 @@ int gpio_set_dir(unsigned int gpio, unsigned int out_flag)
 	{
 		perror("gpio/direction");
 		printf("--buf:'%s'\n", buf);
-		exit(44);
+		//exit(44);
 		return fd;
 	}
 #ifdef VERBOSE
@@ -106,7 +111,7 @@ int gpio_set_value(unsigned int gpio, unsigned int value)
 	{
 		perror("gpio/set-value");
 		printf("--buf:'%s'\n", buf);
-		exit(45);
+		//exit(45);
 		return fd;
 	}
 #ifdef VERBOSE
@@ -138,7 +143,7 @@ int gpio_get_value(unsigned int gpio, unsigned int *value)
 	{
 		perror("gpio/get-value");
 		printf("--buf:'%s'\n", buf);
-		exit(46);
+		//exit(46);
 		return fd;
 	}
 

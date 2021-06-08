@@ -10,6 +10,7 @@
 // #include <linux/ioctl.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 #include "JetsonNanoSPI.h"
 
@@ -20,6 +21,7 @@ static void pabort(const char *s)
     if (errno != 0)
     {
         printf("errno:%i\n", errno);
+        // fprintf(stderr, "")
         perror(s);
     }
     else
@@ -35,9 +37,21 @@ JetsonNanoSPI::JetsonNanoSPI(Frequency frequency, BitOrder bitOrder, DataMode da
     : RHGenericSPI(frequency, bitOrder, dataMode)
 {
     puts("JetsonNanoSPI()");
+    fprintf(stderr, "opening spidev0.0\n");
+    usleep(1000);
+
+    int r = 0;
+spirpt:
     _fd = open("/dev/spidev0.0", O_RDWR);
-    if (_fd < 0)
+    if (_fd < 0) {
+      ++r;
+      if (r > 9) {
         pabort("can't open device");
+      }
+      usleep(1000000 * r);
+      goto spirpt;
+    }
+    fprintf(stderr, "opened spidev0.0\n");
 }
 
 uint8_t JetsonNanoSPI::transfer(uint8_t data)
