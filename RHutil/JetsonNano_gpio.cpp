@@ -219,3 +219,51 @@ int gpio_fd_close(int fd)
 {
 	return close(fd);
 }
+
+void ensure_export(unsigned int gpio)
+{
+  int r = 9, am = 1600;
+  while (gpio_export(gpio) && r > 0)
+  {
+    --r;
+    usleep(am);
+    am *= 2;
+  }
+  if (!r)
+  {
+    perror("ensure_export");
+    //exit(44);
+  }
+}
+
+void ensure_set_dir(unsigned int gpio, unsigned int out_flag)
+{
+  int r = 9, am = 1600;
+  while (gpio_set_dir(gpio, out_flag) && r > 0)
+  {
+    --r;
+    usleep(am);
+    am *= 2;
+  }
+  if (!r)
+  {
+    perror("ensure_set_dir");
+    //exit(45);
+  }
+}
+
+void ensure_set_value(unsigned int gpio, unsigned int value)
+{
+  int r = 10, am = 1600;
+  while (gpio_set_value(gpio, value) && r > 0)
+  {
+    --r;
+    usleep(am);
+    am *= 2;
+  }
+  if (!r)
+  {
+    // perror("ensure_set_value");
+    //exit(46);
+  }
+}
