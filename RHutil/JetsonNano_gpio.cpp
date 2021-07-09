@@ -29,7 +29,7 @@ int gpio_export(unsigned int gpio)
 		perror("gpio/export");
 		return fd;
 	}
-	printf("gpio_export(%u)\n", gpio);
+	// printf("gpio_export(%u)\n", gpio);
 
 	len = snprintf(buf, sizeof(buf), "%d", gpio);
 	err = write(fd, buf, len);
@@ -37,7 +37,7 @@ int gpio_export(unsigned int gpio)
 
 	if (err < 0)
 	{
-		perror("gpio_export : Pin probably already exported ");
+		perror("gpio_export write failed : Pin probably already exported ");
 	}
 
 	return err < 0 ? err : 0;
@@ -57,7 +57,7 @@ int gpio_unexport(unsigned int gpio)
 		perror("gpio/unexport");
 		return fd;
 	}
-	printf("gpio_unexport(%u)\n", gpio);
+	// printf("gpio_unexport(%u)\n", gpio);
 
 	len = snprintf(buf, sizeof(buf), "%d", gpio);
 	err = write(fd, buf, len);
@@ -223,7 +223,7 @@ int gpio_fd_close(int fd)
 void ensure_export(unsigned int gpio)
 {
   int r = 9, am = 1600;
-  while (gpio_export(gpio) && r > 0)
+  while (gpio_export(gpio) && r)
   {
     --r;
     usleep(am);
@@ -239,7 +239,7 @@ void ensure_export(unsigned int gpio)
 void ensure_set_dir(unsigned int gpio, unsigned int out_flag)
 {
   int r = 9, am = 1600;
-  while (gpio_set_dir(gpio, out_flag) && r > 0)
+  while (gpio_set_dir(gpio, out_flag) && r)
   {
     --r;
     usleep(am);
@@ -255,7 +255,7 @@ void ensure_set_dir(unsigned int gpio, unsigned int out_flag)
 void ensure_set_value(unsigned int gpio, unsigned int value)
 {
   int r = 10, am = 1600;
-  while (gpio_set_value(gpio, value) && r > 0)
+  while (gpio_set_value(gpio, value) && r)
   {
     --r;
     usleep(am);
@@ -263,7 +263,7 @@ void ensure_set_value(unsigned int gpio, unsigned int value)
   }
   if (!r)
   {
-    // perror("ensure_set_value");
+    perror("ensure_set_value");
     //exit(46);
   }
 }
