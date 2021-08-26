@@ -42,10 +42,13 @@ puts("here4a");
 puts("here4b");
         // Enable dynamic payload length, disable payload-with-ack, enable noack
         spiWriteRegister(RH_NRF24_REG_1D_FEATURE, RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK);
-        if (spiReadRegister(RH_NRF24_REG_1D_FEATURE) != (RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK))
+puts("here4c");
+uint8_t srr = spiReadRegister(RH_NRF24_REG_1D_FEATURE);
+printf("srr=%u\n", srr);
+        if (/*spiReadRegister(RH_NRF24_REG_1D_FEATURE)*/ srr != (RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK))
             return false;
     }
-puts("here4c");
+puts("here4d");
 
     clearRxBuf();
 

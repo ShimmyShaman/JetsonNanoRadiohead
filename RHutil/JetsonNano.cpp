@@ -12,7 +12,9 @@
 #include <time.h>
 #include <unistd.h>
 
-#include <JetsonGPIO.h>
+#include "JetsonNano_gpio.h"
+
+// #include <JetsonGPIO.h>
 
 // Initialize the values for sanity
 timeval RHStartTime;
@@ -85,20 +87,25 @@ byte SPIClass::transfer(byte _data)
 
 void pinMode(unsigned char pin, unsigned char mode)
 {
-  GPIO::Directions direction;
-  switch (mode) {
-    case OUTPUT:
-      direction = GPIO::Directions::OUT;
-      break;
-    default:
-      fprintf(stderr, "[ERROR] unhandled mode: %u\n", mode);
-      return;
-  }
+  // GPIO::Directions direction;
+  // switch (mode) {
+  //   case OUTPUT:
+  //     direction = GPIO::Directions::OUT;
+  //     break;
+  //   default:
+  //     fprintf(stderr, "[ERROR] unhandled mode: %u\n", mode);
+  //     return;
+  // }
 
-  GPIO::setup(pin, direction);
+  // GPIO::setup(pin, direction);
+  ensure_set_dir(pin, mode);
 }
 
-void digitalWrite(unsigned char pin, unsigned char value) { GPIO::output(pin, value); }
+void digitalWrite(unsigned char pin, unsigned char value)
+{
+  ensure_set_value(pin, value);
+  // GPIO::output(pin, value);
+}
 
 unsigned long millis()
 {
