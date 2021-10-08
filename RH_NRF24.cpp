@@ -26,7 +26,7 @@ bool RH_NRF24::init()
     pinMode(_chipEnablePin, OUTPUT);
     digitalWrite(_chipEnablePin, LOW);
 
-puts("here4a");
+// puts("here4a");
     // Clear interrupts
     spiWriteRegister(RH_NRF24_REG_07_STATUS, RH_NRF24_RX_DR | RH_NRF24_TX_DS | RH_NRF24_MAX_RT);
     // Enable dynamic payload length on all pipes
@@ -39,16 +39,16 @@ puts("here4a");
     { 
 	spiWrite(RH_NRF24_COMMAND_ACTIVATE, 0x73);
 
-puts("here4b");
+// puts("here4b");
         // Enable dynamic payload length, disable payload-with-ack, enable noack
         spiWriteRegister(RH_NRF24_REG_1D_FEATURE, RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK);
-puts("here4c");
+// puts("here4c");
 uint8_t srr = spiReadRegister(RH_NRF24_REG_1D_FEATURE);
 printf("srr=%u\n", srr);
         if (/*spiReadRegister(RH_NRF24_REG_1D_FEATURE)*/ srr != (RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK))
             return false;
     }
-puts("here4d");
+// puts("here4d");
 
     clearRxBuf();
 
