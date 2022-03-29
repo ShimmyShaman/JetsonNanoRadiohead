@@ -20,7 +20,7 @@ bool RH_NRF24::init()
     // so is Arduino with RF73
     _spi.setFrequency(RHGenericSPI::Frequency1MHz);
     if (!RHNRFSPIDriver::init())
-	return false;
+	    return false;
 
     // Initialise the slave select pin
     pinMode(_chipEnablePin, OUTPUT);
@@ -44,7 +44,7 @@ bool RH_NRF24::init()
         spiWriteRegister(RH_NRF24_REG_1D_FEATURE, RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK);
 // puts("here4c");
 uint8_t srr = spiReadRegister(RH_NRF24_REG_1D_FEATURE);
-printf("srr=%u\n", srr);
+printf("srr=%u needs_to_be:%u\n", srr, (RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK));
         if (/*spiReadRegister(RH_NRF24_REG_1D_FEATURE)*/ srr != (RH_NRF24_EN_DPL | RH_NRF24_EN_DYN_ACK))
             return false;
     }
